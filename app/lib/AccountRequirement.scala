@@ -22,7 +22,7 @@ import Implicits._
 
 object AccountRequirements {
 
-  val All = Seq(FullNameRequirement, TwoFactorAuthRequirement, SponsorRequirement)
+  val All = Seq(TwoFactorAuthRequirement, SponsorRequirement)
 
   val RequirementsByLabel = All.map(r => r.issueLabel -> r).toMap
 
@@ -62,7 +62,7 @@ object SponsorRequirement extends AccountRequirement {
   override def fixSummary(implicit org: GHOrganization) =
     "Get a pull request opened to add your username to our " +
       s"[users.txt](https://github.com/${org.getLogin}/people/blob/master/users.txt) file " +
-      s"_- ideally, a Tech Lead or Dev Manager at ${org.displayName} should open this request for you_."
+      s"_- ideally, an existing member of ${org.displayName} should open this request for you_."
 
   def userEvaluatorFor(orgSnapshot: OrgSnapshot) = Success(new UserEvaluator {
     def isSatisfiedBy(user: GHUser) = orgSnapshot.sponsoredUserLoginsLowerCase.contains(user.getLogin.toLowerCase)
